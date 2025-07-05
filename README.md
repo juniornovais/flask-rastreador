@@ -3,7 +3,9 @@
 Este projeto é uma aplicação web que rastreia e exibe a localização geográfica de um dispositivo (como notebook ou celular) em tempo real, usando **Python (Flask)** no back-end e **Leaflet.js** no front-end.
 
 ---
+![preview do mapa](./Captura%20de%20Tela%20(18).png)
 
+---
 ## 🚀 Funcionalidades
 
 - Envia localização (latitude, longitude, precisão) do navegador para a API
