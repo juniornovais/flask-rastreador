@@ -3,7 +3,7 @@
 Este projeto é uma aplicação web que rastreia e exibe a localização geográfica de um dispositivo (como notebook ou celular) em tempo real, usando **Python (Flask)** no back-end e **Leaflet.js** no front-end.
 
 ---
-
+![Ratreador](rastreador.png)
 
 ---
 ## 🚀 Funcionalidades
