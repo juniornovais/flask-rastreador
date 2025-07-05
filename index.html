@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Rastreamento</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="header">
+  <div class="header-left">
+    <a href="#mapa"><h1> RastroFlash</h1></a>
+  </div>
+  <div class="header-right">
+    <nav>
+      <ul class="nav-links">
+        <li
+        ><a href="#caracteristicas">Características</a></li>
+        <li><a href="#comofunciona">Como funciona</a></li>
+        <li><a href="contato.html">Contato</a></li>
+      </ul>
+    </nav>
+  </div>
+
+    
+
+</header>
+  <section class="container-mapa" id="mapa">
+    <div class="container-texts">
+    <h1 class="style-h1">Rastreie qualquer coisa, em qualquer lugar com o RastroFlash</h1>
+    <p>Rastreamento de localização em tempo real simplificado e rápido. Monitore seus ativos, veículos ou remessas ao vivo no mapa e nunca perca de vista o que importa!</p>
+    <div class="container-buttom"><button class="style-buttom">Experimente o rastreamento ao vivo</button></div>
+  </div>
+<div class="map-style">
+  <div id="map"></div>
+  </div>
+      </section>
+
+ 
+
+
+<article class="container-caracteristicas" id="caracteristicas">
+  <div>
+  <h4>Atualizações em tempo real</h4>
+  <p>Visualize instantaneamente locais e movimentos ao vivo com atraso mínimo</p>
+  </div>
+  <div>
+  <h4>Fácil integração</h4>
+  <p>Conecte seus dispositivos ou APIs sem esforço com nosso processo de configuração simples.</p>
+  </div>
+  <div>
+<h4>Seguro e confiável</h4>
+<p>Proteja seus dados com segurança de alto nível e garantias robustas de tempo de atividade.</p>
+  </div>
+</article>
+
+
+
+<div class="container-como-funciona" id="comofunciona"> <h2>Como funciona</h2></div>
+  <article class="container-passo-a-passo"> 
+  <div><p>1. Cadastre-se e adicione seu rastreador/dispositivo</p></div>
+  <div><p>2. Conecte-se ao mapa RastroFlash</p></div>
+  <div><p>3. Acompanhe seus ativos em tempo real!</p></div>
+  </article>
+
+
+  <footer class="container-rodape">
+   <h4>© 2025 RastroFlash. Todos os direitos reservados.</h4>
+   <h5>Entre em contato conosco:  <span> contact@rastroflash.com</span></h5>
+
+
+  </footer>
+
+ <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script>
+  const map = L.map('map').setView([0, 0], 2);
+
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '&copy; OpenStreetMap'
+  }).addTo(map);
+
+  let marcadorAtual = null;
+  let circuloAtual = null;
+
+
+  function desenharHistorico(coordenadas) {
+    coordenadas.forEach(coord => {
+      L.marker([coord.latitude, coord.longitude]).addTo(map);
+      L.circle([coord.latitude, coord.longitude], { radius: coord.accuracy }).addTo(map);
+    });
+  }
+
+
+  fetch('/coordenadas')
+    .then(res => res.json())
+    .then(data => {
+      if (data.length > 0) {
+        desenharHistorico(data);
+        const last = data[data.length - 1];
+        map.setView([last.latitude, last.longitude], 16);
+      }
+    })
+    .catch(err => console.error("Erro ao buscar histórico:", err));
+
+  function success(position) {
+    const latitude = position.coords.latitude;
+    const longitude = position.coords.longitude;
+    const accuracy = position.coords.accuracy;
+
+
+    if (marcadorAtual) {
+      map.removeLayer(marcadorAtual);
+      map.removeLayer(circuloAtual);
+    }
+
+    marcadorAtual = L.marker([latitude, longitude]).addTo(map);
+    circuloAtual = L.circle([latitude, longitude], { radius: accuracy }).addTo(map);
+    map.setView([latitude, longitude], 16);
+
+    fetch('/localizacao', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        latitude: latitude,
+        longitude: longitude,
+        accuracy: accuracy
+      })
+    }).then(res => res.json())
+      .then(data => console.log("Dados enviados:", data))
+      .catch(err => console.error("Erro ao enviar:", err));
+  }
+
+  function error(err) {
+    alert("Erro ao obter localização: " + err.message);
+  }
+
+  navigator.geolocation.watchPosition(success, error);
+    </script>
+</body>
