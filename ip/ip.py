@@ -14,4 +14,3 @@ print(f'IP Público: {ip_publico}')
 
 #Enviar esse IP pra um serviço que retorna a localização
 
-#https://ipinfo.io/45.190.9.246/json
