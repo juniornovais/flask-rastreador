@@ -18,7 +18,7 @@ Este projeto é uma aplicação web que rastreia e exibe a localização geográ
 
 ## 🛠️ Tecnologias utilizadas
 
-- Python 3
+- Python 
 - Flask
 - HTML + CSS + JavaScript
 - Leaflet.js
