@@ -2,7 +2,6 @@ from flask import Flask, request, jsonify, render_template
 
 app = Flask(__name__)
 
-# Lista para guardar posições temporariamente
 coordenadas = []
 
 @app.route('/')
