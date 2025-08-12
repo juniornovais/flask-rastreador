@@ -32,6 +32,6 @@ Este projeto é uma aplicação web que rastreia e exibe a localização geográ
 git clone https://github.com/juniornovaisx/flask-rastreador.git
 cd flask-rastreador
 python -m venv venv
-source venv/bin/activate  # Ou venv\Scripts\activate no Windows
+source venv/bin/activate 
 pip install -r requirements.txt
 python app.py
